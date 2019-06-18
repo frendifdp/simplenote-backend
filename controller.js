@@ -1,8 +1,17 @@
 'use strict'
 
 const connection = require('./connect');
+const response = require('./response');
 
 //GET
+
+
+
+exports.tes = function (req, res){
+    response.ok('Welcome!', res);
+}
+
+
 exports.noteget = function (req, res) {
 
 
@@ -21,14 +30,29 @@ exports.noteget = function (req, res) {
 
 
 exports.notepost = function (req, res) {
+    let title = req.body.title;
+    let note = req.body.note;
     let category = req.body.category;
-    connection.query('INSERT INTO category SET category=?', [category],
-    function(error, rows, field){
-        if(error) throw
-        else{
-            connection.query(`SELECT TOP 1 id FROM category`, function(error, rows, field){
-                
-            })
-        }
-    })
+    if(title == "" && note == "" && category == ""){
+        return res.send({
+            status: "failed",
+            message: "field required",
+        })
+    }
+    else{
+        connection.query(`INSERT INTO category SET category=?`, [category],
+        function(error, rows, field){
+            if(error) throw error
+            else{
+                connection.query(`INSERT INTO note SET title=?, note=?, category=?`,
+                [title, note, rows.insertId],
+                function(erro, row, fiel){
+                    return res.send({
+                        status: 200,
+                        message: "note has been added",
+                    })
+                })
+            }
+        })
+    }
 }
