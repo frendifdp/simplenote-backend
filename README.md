@@ -1,3 +1,1 @@
 # simplenote-backend
-
-as
