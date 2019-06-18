@@ -1,1 +1,0 @@
-asdasdconst a;
