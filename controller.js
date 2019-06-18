@@ -26,7 +26,9 @@ exports.notepost = function (req, res) {
     function(error, rows, field){
         if(error) throw
         else{
-            
+            connection.query(`SELECT TOP 1 id FROM category`, function(error, rows, field){
+                
+            })
         }
     })
 }
