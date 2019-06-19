@@ -27,7 +27,7 @@ exports.notes = function (req, res){
         let off = (req.query.page - 1) * lim;
         var pageSql = `LIMIT ${lim} OFFSET ${off}`;
     }
-    console.log(pageSql)
+    //console.log(pageSql)
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.title ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
         return res.json(rows);
@@ -104,9 +104,10 @@ exports.putnote = function(req, res){
     else{
         let sql = `UPDATE note SET title='${title}', note='${note}' WHERE id='${id}'`
         connection.query(sql, function(error, rows, field){
-            let sql = `SELECT category FROM note WHERE id='${id}'`
+            let sql = `SELECT category as id FROM note WHERE id='${id}'`
             connection.query(sql, function (a, b, c) {
-                let sql = `UPDATE category SET category='${category}' WHERE id='${b.id}'`
+                let sql = `UPDATE category SET category='${category}' WHERE id='${b[0].id}'`
+                //console.log(sql)
                 connection.query(sql, function (aa, bb, cc) {
                     return res.send({
                         status: 200,

@@ -25,6 +25,7 @@ app.use(
         extended: true,
     })
 )
+
 app.use(bodyParser.json());
 app.use(cors(corsOption))
 
