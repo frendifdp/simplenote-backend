@@ -2,21 +2,20 @@
 
 module.exports = function(app){
     const controller = require('./controller');
+    const response = require('./response');
+
+
+
+
     //GET
-
-
-
-    app.get('/', controller.tes);
-    app.get('/note/get', controller.noteget);
-
-
-
+    app.get('/', response.welcome);
+    app.get('/notes', controller.notes);
+    app.get('/note/:id', controller.note);
+    //rsapp.get('/notes/:off/:lim', controller.pagination);
     //POST
-    app.post('/note/post', controller.notepost);
-
-    //PATCH
-    //app.patch('/note/patch', controller.notepatch);
-
+    app.post('/note', controller.newnote);
+    //PUT
+    app.put('/note/:id', controller.putnote);
     //DELETE
-    //app.delete('/note/delete', controller.notedelete);
+    app.delete('/note/:id', controller.delnote);
 }

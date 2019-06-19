@@ -1,9 +1,8 @@
 'use strict'
 
-exports.ok = function (values, res) {
+exports.welcome = function (values, res) {
     const data = {
-        status: 200,
-        values: values,
+        message: "Welcome to simplenotes",
     };
 
     
