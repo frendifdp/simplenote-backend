@@ -18,19 +18,14 @@ let sql = `SELECT n.id as id, n.title as title, n.note as note, n.time as time, 
 exports.notes = function (req, res){
     let search = req.query.search || "";
     let sort = req.query.sort || "DESC";
-    var lim = 5;
-    if(typeof(req.query.page) == 'undefined' || req.query.page == ""){
-        var pageSql = `LIMIT 5 OFFSET 0`;
-    }
-    else{
-        var off = (req.query.page - 1) * lim;
-        var pageSql = `LIMIT `+ lim +` OFFSET `+ off;
-    }
+    var lim = req.query.limit || 5;
+    var off = (req.query.page - 1) * lim || 0;
+    var pageSql = `LIMIT `+ lim +` OFFSET `+ off;
     var totalData;
     var maxPage;
     let countSql = `SELECT COUNT(id) as total FROM note WHERE title LIKE '%${search}%'`;
-    connection.query(countSql, function(error, rows, field){
-        totalData = rows[0].total;
+    connection.query(countSql, function(error, row, field){
+        totalData = row[0].total;
         maxPage = Math.ceil(Number(totalData) / lim);
     });
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
