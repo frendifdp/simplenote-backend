@@ -16,7 +16,6 @@ let sql = `SELECT n.id as id, n.title as title, n.note as note, n.time as time, 
     FROM note as n INNER JOIN category as c ON n.category=c.id `;
 
 exports.notes = function (req, res){
-    //console.log(JSON.stringify(req.query));
     let search = req.query.search || "";
     let sort = req.query.sort || "ASC";
     var lim = 5;
@@ -26,9 +25,7 @@ exports.notes = function (req, res){
     else{
         var off = (req.query.page - 1) * lim;
         var pageSql = `LIMIT `+ lim +` OFFSET `+ off;
-        //console.log(pageSql)
     }
-    //console.log(pageSql)
     var totalData;
     var maxPage;
     let countSql = `SELECT COUNT(id) as total FROM note`;
