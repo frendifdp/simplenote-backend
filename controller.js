@@ -23,16 +23,18 @@ exports.notes = function (req, res){
     var pageSql = `LIMIT `+ lim +` OFFSET `+ off;
     var totalData;
     var maxPage;
+
     let countSql = `SELECT COUNT(id) as total FROM note WHERE title LIKE '%${search}%'`;
     connection.query(countSql, function(error, row, field){
         totalData = row[0].total;
         maxPage = Math.ceil(Number(totalData) / lim);
     });
+
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
         var data = new Array;
         data = {"total": totalData, "page": Number(req.query.page) || 1,
-         "totalPage": maxPage, "limit" : lim };
+         "totalPage": maxPage, "limit" : Number(lim) };
         //"data_found": rows.length,
         var output = {"data": rows, "info": data}
         //rows.push(data);
