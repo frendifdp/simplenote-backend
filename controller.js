@@ -17,7 +17,7 @@ let sql = `SELECT n.id as id, n.title as title, n.note as note, n.time as time, 
 
 exports.notes = function (req, res){
     let search = req.query.search || "";
-    let sort = req.query.sort || "ASC";
+    let sort = req.query.sort || "DESC";
     var lim = 5;
     if(typeof(req.query.page) == 'undefined' || req.query.page == ""){
         var pageSql = '';
