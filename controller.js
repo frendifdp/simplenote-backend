@@ -24,9 +24,9 @@ exports.notes = function (req, res){
         var pageSql = '';
     }
     else{
-        console.log(lim)
         var off = (req.query.page - 1) * lim;
-        var pageSql = `LIMIT `+ lim `OFFSET `+ off;
+        var pageSql = `LIMIT `+ lim +` OFFSET `+ off;
+        //console.log(pageSql)
     }
     //console.log(pageSql)
     var totalData;
@@ -40,9 +40,10 @@ exports.notes = function (req, res){
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
         var data = new Array;
-        data = { "max_page": maxPage, "total_data": totalData };
-        rows.push(data);
-        return res.json(rows);
+        data = {"page_now": Number(req.query.page) || 1, "max_page": maxPage, "total_data": totalData};
+        var output = {"data": rows, "info": data}
+        //rows.push(data);
+        return res.json(output);
     })
 }
 exports.note = function (req, res) {
