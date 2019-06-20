@@ -105,10 +105,10 @@ exports.putnote = function(req, res){
         let sql = `UPDATE note SET title='${title}', note='${note}' WHERE id='${id}'`
         connection.query(sql, function(error, rows, field){
             let sql = `SELECT category as id FROM note WHERE id='${id}'`
-            connection.query(sql, function (a, b, c) {
-                let sql = `UPDATE category SET category='${category}' WHERE id='${b[0].id}'`
+            connection.query(sql, function (error, row) {
+                let sql = `UPDATE category SET category='${category}' WHERE id='${row[0].id}'`
                 //console.log(sql)
-                connection.query(sql, function (aa, bb, cc) {
+                connection.query(sql, function () {
                     return res.send({
                         status: 200,
                         message: "note has been updated",
