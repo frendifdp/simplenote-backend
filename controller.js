@@ -19,17 +19,29 @@ exports.notes = function (req, res){
     //console.log(JSON.stringify(req.query));
     let search = req.query.search || "";
     let sort = req.query.sort || "ASC";
+    var lim = 5;
     if(typeof(req.query.page) == 'undefined' || req.query.page == ""){
         var pageSql = '';
     }
     else{
-        let lim = 5;
-        let off = (req.query.page - 1) * lim;
-        var pageSql = `LIMIT ${lim} OFFSET ${off}`;
+        console.log(lim)
+        var off = (req.query.page - 1) * lim;
+        var pageSql = `LIMIT `+ lim `OFFSET `+ off;
     }
     //console.log(pageSql)
-    let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.title ${sort} ${pageSql}`;
+    var totalData;
+    var maxPage;
+    let countSql = `SELECT COUNT(id) as total FROM note`;
+    connection.query(countSql, function(error, rows, field){
+        totalData = rows[0].total;
+        maxPage = Math.round(Number(totalData) / lim);
+    });
+    //console.log(totalData)
+    let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
+        var data = new Array;
+        data = { "max_page": maxPage, "total_data": totalData };
+        rows.push(data);
         return res.json(rows);
     })
 }
