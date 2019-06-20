@@ -20,7 +20,7 @@ exports.notes = function (req, res){
     let sort = req.query.sort || "DESC";
     var lim = 5;
     if(typeof(req.query.page) == 'undefined' || req.query.page == ""){
-        var pageSql = '';
+        var pageSql = `LIMIT 5 OFFSET 0`;
     }
     else{
         var off = (req.query.page - 1) * lim;
@@ -28,7 +28,7 @@ exports.notes = function (req, res){
     }
     var totalData;
     var maxPage;
-    let countSql = `SELECT COUNT(id) as total FROM note`;
+    let countSql = `SELECT COUNT(id) as total FROM note WHERE title LIKE '%${search}%'`;
     connection.query(countSql, function(error, rows, field){
         totalData = rows[0].total;
         maxPage = Math.ceil(Number(totalData) / lim);
