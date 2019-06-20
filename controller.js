@@ -41,7 +41,7 @@ exports.notes = function (req, res){
     connection.query(ssql, function(error, rows, field){
         var data = new Array;
         data = {"page_now": Number(req.query.page) || 1, "max_page": maxPage, "total_data": totalData};
-        var output = {"data": rows, "info": data}
+        var output = {"data": rows, "info": data, "data_found": rows.length}
         //rows.push(data);
         return res.json(output);
     })
