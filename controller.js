@@ -34,14 +34,16 @@ exports.notes = function (req, res){
     let countSql = `SELECT COUNT(id) as total FROM note`;
     connection.query(countSql, function(error, rows, field){
         totalData = rows[0].total;
-        maxPage = Math.round(Number(totalData) / lim);
+        maxPage = Math.ceil(Number(totalData) / lim);
     });
     //console.log(totalData)
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
         var data = new Array;
-        data = {"page_now": Number(req.query.page) || 1, "max_page": maxPage, "total_data": totalData};
-        var output = {"data": rows, "info": data, "data_found": rows.length}
+        data = {"total": totalData, "page": Number(req.query.page) || 1,
+         "totalPage": maxPage, "limit" : lim };
+        //"data_found": rows.length,
+        var output = {"data": rows, "info": data}
         //rows.push(data);
         return res.json(output);
     })
