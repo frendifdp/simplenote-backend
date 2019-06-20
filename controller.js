@@ -33,7 +33,6 @@ exports.notes = function (req, res){
         totalData = rows[0].total;
         maxPage = Math.ceil(Number(totalData) / lim);
     });
-    //console.log(totalData)
     let ssql = sql + `WHERE n.title LIKE '%${search}%' ORDER BY n.time ${sort} ${pageSql}`;
     connection.query(ssql, function(error, rows, field){
         var data = new Array;
