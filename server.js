@@ -28,7 +28,7 @@ app.use(
 
 app.use(bodyParser.json());
 
-const whiteList = ['http://localhost', undefined];
+const whiteList = ['http://localhost', undefined, 'chrome-extension://ihgpcfpkpmdcghlnaofdmjkoemnlijdi'];
 const corsOption = {
     origin: function (origin, callback) {
         //console.log(origin)
